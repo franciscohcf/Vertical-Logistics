@@ -1,26 +1,28 @@
-source "https://rubygems.org"
+source 'https://rubygems.org'
 
-gem "rails", "~> 8.0.1"
-gem "sqlite3", ">= 2.1"
-gem "puma", ">= 5.0"
+gem 'puma', '>= 5.0'
+gem 'rails', '~> 8.0.1'
+gem 'sqlite3', '>= 2.1'
 
+gem 'tzinfo-data', platforms: %i[windows jruby]
 
-gem "tzinfo-data", platforms: %i[ windows jruby ]
+gem 'solid_cable'
+gem 'solid_cache'
+gem 'solid_queue'
 
-gem "solid_cache"
-gem "solid_queue"
-gem "solid_cable"
+gem 'bootsnap', require: false
 
-gem "bootsnap", require: false
+gem 'kamal', require: false
 
-gem "kamal", require: false
-
-gem "thruster", require: false
-
-
+gem 'thruster', require: false
 
 group :development, :test do
-  gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
-  gem "brakeman", require: false
-  gem "rubocop-rails-omakase", require: false
+  gem 'brakeman', require: false
+  gem 'debug', platforms: %i[mri windows], require: 'debug/prelude'
+  gem 'pry-byebug'
+  gem 'rspec-rails'
+  gem 'rubocop-rails'
+  gem 'rubocop-rails-omakase', require: false
+  gem 'rubocop-rspec'
+  gem 'rubocop-rspec_rails'
 end
