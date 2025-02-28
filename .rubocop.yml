@@ -52,3 +52,12 @@ RSpec/NestedGroups:
 
 RSpec/LetSetup:
   Enabled: false
+
+Rails/RedundantForeignKey:
+  Enabled: false
+
+Rails/UniqueValidationWithoutIndex:
+  Enabled: false
+
+Rails/RedundantPresenceValidationOnBelongsTo:
+  Enabled: false

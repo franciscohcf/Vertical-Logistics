@@ -36,4 +36,11 @@ RSpec.describe User, type: :model do
       end
     end
   end
+
+  describe 'Associations' do
+    it 'has many orders' do
+      association = User.reflect_on_association(:orders)
+      expect(association.macro).to eq(:has_many)
+    end
+  end
 end
