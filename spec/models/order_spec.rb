@@ -57,5 +57,10 @@ RSpec.describe Order, type: :model do
       expect(association.macro).to eq(:belongs_to)
       expect(association.foreign_key).to eq('user_id')
     end
+
+    it 'has many products' do
+      association = Order.reflect_on_association(:products)
+      expect(association.macro).to eq(:has_many)
+    end
   end
 end
