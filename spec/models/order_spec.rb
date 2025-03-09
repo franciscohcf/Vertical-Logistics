@@ -16,8 +16,10 @@ RSpec.describe Order, type: :model do
       it 'has order_id, user_id, date and total' do
         order = Order.create!(order_id: 123, user_id: 1, date: Time.zone.today)
 
-        Product.create!(product_id: 111, order_id: 123, value: 50.0)
-        Product.create!(product_id: 112, order_id: 123, value: 100.0)
+        Product.create!(product_id: 111)
+        Product.create!(product_id: 112)
+        OrderProduct.create!(order_id: 123, product_id: 111, value: 50.0)
+        OrderProduct.create!(order_id: 123, product_id: 112, value: 100.0)
 
         expect(order.total).to eq 150.0
         expect(order).to be_valid
@@ -64,8 +66,15 @@ RSpec.describe Order, type: :model do
       expect(association.foreign_key).to eq('user_id')
     end
 
-    it 'has many products' do
-      expect(Order.reflect_on_association(:products).macro).to eq(:has_many)
+    it 'has many order_products' do
+      expect(Order.reflect_on_association(:order_products).macro).to eq(:has_many)
+    end
+
+    it 'has many products through order_products' do
+      association = Order.reflect_on_association(:products)
+
+      expect(association.macro).to eq(:has_many)
+      expect(association.options[:through]).to eq(:order_products)
     end
   end
 end

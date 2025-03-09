@@ -8,38 +8,34 @@ RSpec.describe Product, type: :model do
   end
 
   describe 'Validations' do
-    before do
-      User.create!(user_id: 1, name: 'Paulo')
-      Order.create!(order_id: 123, user_id: 1, date: Time.zone.today)
-    end
-
-    it 'is valid with product_id, order_id, and value' do
-      expect(Product.new(product_id: 111, order_id: 123, value: 50.0)).to be_valid
+    it 'is valid with just a product_id' do
+      expect(Product.new(product_id: 111)).to be_valid
     end
 
     it 'is invalid without a product_id' do
-      product = Product.new(order_id: 123, value: 50.0)
+      product = Product.new
       product.valid?
       expect(product.errors[:product_id]).to include("can't be blank")
     end
 
-    it 'is invalid without an order_id' do
-      product = Product.new(product_id: 111, value: 50.0)
-      product.valid?
-      expect(product.errors[:order_id]).to include("can't be blank")
-    end
-
-    it 'is invalid without a value' do
-      product = Product.new(product_id: 111, order_id: 123)
-      product.valid?
-      expect(product.errors[:value]).to include("can't be blank")
+    it 'is invalid with a duplicate product_id' do
+      Product.create!(product_id: 111)
+      duplicate_product = Product.new(product_id: 111)
+      duplicate_product.valid?
+      expect(duplicate_product.errors[:product_id]).to include('has already been taken')
     end
   end
 
   describe 'Associations' do
-    it 'belongs to an order' do
-      association = Product.reflect_on_association(:order)
-      expect(association.macro).to eq(:belongs_to)
+    it 'has many order_products' do
+      association = Product.reflect_on_association(:order_products)
+      expect(association.macro).to eq(:has_many)
+    end
+
+    it 'has many orders through order_products' do
+      association = Product.reflect_on_association(:orders)
+      expect(association.macro).to eq(:has_many)
+      expect(association.options[:through]).to eq(:order_products)
     end
   end
 end
