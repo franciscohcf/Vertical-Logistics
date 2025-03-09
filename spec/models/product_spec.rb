@@ -10,7 +10,7 @@ RSpec.describe Product, type: :model do
   describe 'Validations' do
     before do
       User.create!(user_id: 1, name: 'Paulo')
-      Order.create!(order_id: 123, user_id: 1, total: 100.0, date: Time.zone.today)
+      Order.create!(order_id: 123, user_id: 1, date: Time.zone.today)
     end
 
     it 'is valid with product_id, order_id, and value' do

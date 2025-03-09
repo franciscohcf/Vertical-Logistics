@@ -6,6 +6,9 @@ class Order < ApplicationRecord
 
   validates :order_id, presence: true, uniqueness: true
   validates :user_id, presence: true
-  validates :total, presence: true, numericality: true
   validates :date, presence: true
+
+  def total
+    products.sum(:value)
+  end
 end
