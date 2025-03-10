@@ -125,6 +125,16 @@ A Rails API for processing and managing order entries from text ledger files.
 docker compose build
 ```
 
+Start with the following command to access the container terminal:
+```bash
+make bash
+```
+
+Run migrations inside container:
+```bash
+rails db:migrate
+```
+
 ### Testing
 
 Start with the following command to access the container terminal:
