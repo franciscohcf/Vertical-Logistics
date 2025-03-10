@@ -6,6 +6,8 @@ class OrderRecorderService
   end
 
   def call
+    raise ArgumentError, 'Order data cannot be nil' if hash.nil?
+
     persist_data
   end
 

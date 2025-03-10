@@ -100,10 +100,10 @@ RSpec.describe OrderRecorderService do
       context 'when order_hash is nil' do
         let(:order_hash) { nil }
 
-        it 'raises a meaningful error' do
+        it 'raises a error' do
           expect { result }.to raise_error(
-            NoMethodError,
-            /undefined method '\[\]' for nil/
+            ArgumentError,
+            'Order data cannot be nil'
           )
         end
       end
