@@ -8,7 +8,15 @@ class OrderRecorderService
   def call
     raise ArgumentError, 'Order data cannot be nil' if hash.nil?
 
-    persist_data
+    begin
+      persist_data
+      true
+    rescue ActiveRecord::RecordInvalid => e
+      raise e unless e.message.include?('Order has already been taken')
+
+      Rails.logger.info("Skipping duplicate order: #{hash[:order_id]}")
+      true
+    end
   end
 
   private
@@ -24,21 +32,19 @@ class OrderRecorderService
 
   def find_or_create_user
     user = User.find_or_create_by(user_id: hash[:user_id])
-
     user.update!(name: hash[:name]) if user.new_record?
-
     user
   end
 
   def find_or_create_order(user)
-    order = Order.find_or_create_by(
+    existing_order = Order.find_by(order_id: hash[:order_id])
+    return existing_order if existing_order
+
+    Order.create!(
       order_id: hash[:order_id],
-      user_id: user.user_id
+      user_id: user.user_id,
+      date: Date.parse(hash[:date])
     )
-
-    order.update!(date: Date.parse(hash[:date])) if order.new_record?
-
-    order
   end
 
   def find_or_create_product
