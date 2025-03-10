@@ -29,7 +29,7 @@ RSpec.describe OrderEntriesController, type: :controller do
         expect(order_processing_service).to have_received(:call)
         expect(response).to have_http_status(:ok)
         expect(response.parsed_body['message']).to eq('Order entries processed successfully')
-        expect(response.parsed_body).to have_key('processing_time_seconds')
+        expect(response.parsed_body).to have_key('processing_time')
       end
     end
 
