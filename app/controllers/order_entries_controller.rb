@@ -26,7 +26,7 @@ class OrderEntriesController < ApplicationController
 
     render json: {
       message: 'Order entries processed successfully',
-      processing_time_seconds: processing_time
+      processing_time: processing_time
     }, status: :ok
   end
 
