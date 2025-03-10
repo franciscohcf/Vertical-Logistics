@@ -78,4 +78,74 @@ RSpec.describe OrdersController, type: :controller do
       end
     end
   end
+
+  describe 'GET #by_period' do
+    let(:first_user) { User.create!(user_id: 1, name: 'First User') }
+    let(:second_user) { User.create!(user_id: 2, name: 'Second User') }
+
+    let(:first_product) { Product.create!(product_id: 201) }
+    let(:second_product) { Product.create!(product_id: 202) }
+
+    let(:first_june_order) do
+      Order.create!(
+        order_id: 101,
+        user_id: first_user.user_id,
+        date: Date.new(2021, 6, 15)
+      )
+    end
+
+    let(:second_june_order) do
+      Order.create!(
+        order_id: 102,
+        user_id: first_user.user_id,
+        date: Date.new(2021, 7, 20)
+      )
+    end
+
+    let(:august_order) do
+      Order.create!(
+        order_id: 103,
+        user_id: second_user.user_id,
+        date: Date.new(2021, 8, 10)
+      )
+    end
+
+    before do
+      OrderProduct.create!(
+        order_id: first_june_order.order_id,
+        product_id: first_product.product_id,
+        value: 100.50
+      )
+      OrderProduct.create!(
+        order_id: second_june_order.order_id,
+        product_id: second_product.product_id,
+        value: 200.75
+      )
+    end
+
+    it 'returns orders within a specific date range' do
+      get :by_period, params: { start_date: '2021-06-01', end_date: '2021-07-31' }
+
+      expect(response).to be_successful
+      json_response = response.parsed_body
+
+      expect(json_response.size).to eq(1)
+      expect(json_response.first['user_id']).to eq(first_user.user_id)
+      expect(json_response.first['orders'].size).to eq(2)
+    end
+
+    it 'handles invalid date ranges' do
+      get :by_period, params: { start_date: '2021-12-31', end_date: '2021-01-01' }
+
+      expect(response).to have_http_status(:bad_request)
+      expect(response.parsed_body['error']).to eq('Invalid date range')
+    end
+
+    it 'returns empty array for no matching orders' do
+      get :by_period, params: { start_date: '2022-01-01', end_date: '2022-12-31' }
+
+      expect(response).to be_successful
+      expect(response.parsed_body).to be_empty
+    end
+  end
 end

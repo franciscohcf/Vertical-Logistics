@@ -53,6 +53,9 @@ RSpecRails/InferredSpecType:
 RSpec/NestedGroups:
   Max: 4
 
+RSpec/MultipleMemoizedHelpers:
+  Max: 10
+
 RSpec/LetSetup:
   Enabled: false
 

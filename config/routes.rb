@@ -3,6 +3,7 @@ Rails.application.routes.draw do
 
   post '/order_entries', to: 'order_entries#create'
 
-  get '/orders', to: 'orders#index'
+  get 'orders/by_period', to: 'orders#by_period'
   get '/orders/:id', to: 'orders#show'
+  get '/orders', to: 'orders#index'
 end
