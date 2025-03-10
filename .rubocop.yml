@@ -44,6 +44,9 @@ Metrics/BlockLength:
 Layout/LineLength:
   Max: 130
 
+Metrics/MethodLength:
+  Max: 15
+
 RSpecRails/InferredSpecType:
   Enabled: false
 
