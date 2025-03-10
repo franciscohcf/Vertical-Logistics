@@ -4,4 +4,5 @@ Rails.application.routes.draw do
   post '/order_entries', to: 'order_entries#create'
 
   get '/orders', to: 'orders#index'
+  get '/orders/:id', to: 'orders#show'
 end

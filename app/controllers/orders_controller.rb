@@ -5,6 +5,20 @@ class OrdersController < ApplicationController
     render json: format_users(users_with_orders)
   end
 
+  def show
+    order = Order.includes(:user, order_products: :product).find_by(order_id: params[:id])
+
+    return render json: { error: 'Order not found' }, status: :not_found if order.nil?
+
+    response = {
+      user_id: order.user.user_id,
+      name: order.user.name,
+      order: format_orders([order]).first
+    }
+
+    render json: response
+  end
+
   private
 
   def format_users(users)
