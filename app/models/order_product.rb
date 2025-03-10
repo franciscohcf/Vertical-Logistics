@@ -1,6 +1,8 @@
 class OrderProduct < ApplicationRecord
   self.table_name = 'order_products'
 
+  self.primary_key = nil
+
   belongs_to :order, foreign_key: :order_id, primary_key: :order_id, inverse_of: :order_products
   belongs_to :product, foreign_key: :product_id, primary_key: :product_id, inverse_of: :order_products
 

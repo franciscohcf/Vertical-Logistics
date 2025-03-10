@@ -18,7 +18,7 @@ class OrderRecorderService
       user = find_or_create_user
       order = find_or_create_order(user)
       product = find_or_create_product
-      create_or_update_order_product(order, product)
+      find_or_create_order_product(order, product)
     end
   end
 
@@ -45,15 +45,14 @@ class OrderRecorderService
     Product.find_or_create_by(product_id: hash[:product_id])
   end
 
-  def create_or_update_order_product(order, product)
-    order_product = OrderProduct.find_or_initialize_by(
+  def find_or_create_order_product(order, product)
+    order_product = OrderProduct.find_by(
       order_id: order.order_id,
       product_id: product.product_id
     )
 
-    order_product.value = hash[:value]
-    order_product.save!
+    return order_product unless order_product.nil?
 
-    order_product
+    OrderProduct.create!(order_id: order.order_id, product_id: product.product_id, value: hash[:value])
   end
 end
