@@ -122,12 +122,31 @@ A Rails API for processing and managing order entries from text ledger files.
 
 ### Setup
 ```bash
-bundle install
-bin/rails db:prepare
-bin/dev
+docker compose build
 ```
 
 ### Testing
+
+Start with the following command to access the container terminal:
 ```bash
-bundle exec rspec
+make bash
 ```
+
+Once inside the container run:
+```bash
+rspec
+```
+
+### Start Server
+
+Start with the following command to access the container terminal:
+```bash
+make bash
+```
+
+Once inside the container run:
+```bash
+rails s -p 3000 -b 0.0.0.0
+```
+
+Now the server will be running on the container ;)
